@@ -1,11 +1,40 @@
 User
-    ident Text
-    password Text Maybe
+    ident     Text
+    password  Text Maybe
     UniqueUser ident
+  deriving Show
+
+Project
+    name      Text
+    created   Day
+  deriving Show
+
+Todo
+    title     Text
+    done      Bool
+    asap      Bool
+    date      Day
+    created   Day
+    memo      Text
+    user      UserId
+    project   ProjectId
+  deriving Show
+
+TagTodo
+    tag       TagId
+    todo      TodoId
+    UniqueTagTodo
+  deriving Show
+
+Tag
+    name      Text
+  deriving Show
+
 Email
     email Text
     user UserId Maybe
     verkey Text Maybe
     UniqueEmail email
+  deriving Show
 
  -- By default this file is used in Model.hs (which is imported by Foundation.hs)
