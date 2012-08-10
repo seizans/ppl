@@ -3,37 +3,44 @@ module Handler.Todo where
 
 import Import
 
-getTodoR :: TodoId -> Handler RepJson
-getTodoR = undefined
+getTodoR :: TodoId -> Handler RepHtmlJson
+getTodoR todoid = do
+    let json = object []
+    let widget = do
+        setTitle "Todo"
+        $(widgetFile "todo")
+    defaultLayoutJson widget json
 
 postTodoR :: TodoId -> Handler RepJson
-postTodoR = undefined
+postTodoR todoid = do
+    let
+--    when (todoid /= 0) $ return ()
 
 putTodoR :: TodoId -> Handler RepJson
-putTodoR = undefined
+putTodoR todoid = undefined
 
 deleteTodoR :: TodoId -> Handler RepJson
-deleteTodoR = undefined
+deleteTodoR todoid = undefined
 
 putTodoTitleR :: TodoId -> Handler RepJson
-putTodoTitleR = undefined
+putTodoTitleR todoid = undefined
 
 putTodoDoneR :: TodoId -> Handler RepJson
-putTodoDoneR = undefined
+putTodoDoneR todoid = undefined
 
 putTodoAsapR :: TodoId -> Handler RepJson
-putTodoAsapR = undefined
+putTodoAsapR todoid = undefined
 
 putTodoDateR :: TodoId -> Handler RepJson
-putTodoDateR = undefined
+putTodoDateR todoid = undefined
 
 putTodoCreatedR :: TodoId -> Handler RepJson
-putTodoCreatedR = undefined
+putTodoCreatedR todoid = undefined
 
 putTodoMemoR :: TodoId -> Handler RepJson
-putTodoMemoR = undefined
+putTodoMemoR todoid = undefined
 
 putTodoProjectR :: TodoId -> Handler RepJson
-putTodoProjectR = undefined
+putTodoProjectR todoid = undefined
 
 
