@@ -5,3 +5,13 @@
 /robots.txt RobotsR GET
 
 / HomeR GET POST
+
+/todo/#TodoId          TodoR         GET POST PUT DELETE
+/todo/#TodoId/title    TodoTitleR             PUT
+/todo/#TodoId/done     TodoDoneR              PUT
+/todo/#TodoId/asap     TodoAsapR              PUT
+/todo/#TodoId/date     TodoDateR              PUT
+/todo/#TodoId/created  TodoCreatedR           PUT
+/todo/#TodoId/memo     TodoMemoR              PUT
+/todo/#TodoId/project  TodoProjectR           PUT
+
