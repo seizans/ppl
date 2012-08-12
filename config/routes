@@ -6,6 +6,7 @@
 
 / HomeR GET POST
 
+/todos                 TodosR        GET
 /todo/#TodoId          TodoR         GET POST PUT DELETE
 /todo/#TodoId/title    TodoTitleR             PUT
 /todo/#TodoId/done     TodoDoneR              PUT
@@ -15,3 +16,6 @@
 /todo/#TodoId/memo     TodoMemoR              PUT
 /todo/#TodoId/project  TodoProjectR           PUT
 
+/tags                  TagsR         GET
+/tag                   TagCreateR    GET POST
+/tag/#TagId            TagR          GET POST PUT DELETE
