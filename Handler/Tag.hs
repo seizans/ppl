@@ -3,11 +3,18 @@ module Handler.Tag where
 
 import Import
 
+tagForm :: Maybe Tag -> Form Tag
+tagForm mtag = renderDivs $ Tag
+    <$> areq textField "Name" (fmap tagName mtag)
+
 getTagsR :: Handler RepHtmlJson
 getTagsR = undefined
 
 getTagCreateR :: Handler RepHtml
-getTagCreateR = undefined
+getTagCreateR = do
+    (formWidget, formEnctype) <- generateFormPost (tagForm Nothing)
+    let widget = $(widgetFile "tagform")
+    defaultLayout widget
 
 postTagCreateR :: Handler RepHtml
 postTagCreateR = undefined

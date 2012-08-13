@@ -2,19 +2,34 @@
 module Handler.Todo where
 
 import Import
+import Database.Persist.GenericSql
+
+selectTodo :: Handler [Entity Todo]
+selectTodo = runDB $ rawSql "SELECT ?? FROM todo" []
+
+
+getTodosR :: Handler RepHtml
+getTodosR = do
+    let widget = do
+        setTitle "Todos"
+        $(widgetFile "todos")
+    defaultLayout widget
 
 getTodoR :: TodoId -> Handler RepHtmlJson
 getTodoR todoid = do
-    let json = object []
+    todos <- selectTodo
+    let json = object ["hoge".=True]
     let widget = do
         setTitle "Todo"
         $(widgetFile "todo")
     defaultLayoutJson widget json
 
-postTodoR :: TodoId -> Handler RepJson
+postTodoR :: TodoId -> Handler ()
 postTodoR todoid = do
-    let
---    when (todoid /= 0) $ return ()
+    -- TODO: check if todoUser == user
+    -- TODO: create new record.
+    -- TODO: return new ID.
+    sendResponse ()
 
 putTodoR :: TodoId -> Handler RepJson
 putTodoR todoid = undefined
