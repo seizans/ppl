@@ -1,0 +1,27 @@
+$(document).ready(function() {
+
+f = function () { $.ajax({
+  url: '/tag/1',
+  type: 'PUT',
+  data: "name=John&location=Boston",
+  success: function(data) {
+    alert('Load was performed.');
+  }
+});
+};
+
+delReq = function () {
+    var data = $('#formid').serialize();
+    alert(data);
+    $.ajax(
+      { url: '/tag/1'
+      , type: 'DELETE'
+      , data: data
+      , success: function(data) { alert("Delete Successful"); }
+      }
+    );
+};
+
+$('#put').click(f);
+$('#delete').click(delReq);
+});

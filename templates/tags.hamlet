@@ -1,0 +1,11 @@
+<table>
+    <tr>
+        <th>ID
+        <th>TagName
+        <th>modify
+    $forall tagEntity <- tagEntities
+      <tr>
+        <td>#{show $ entityKey tagEntity}
+        <td>#{tagName $ entityVal tagEntity}
+        <td>
+            <a href=@{TagR $ entityKey tagEntity}>update

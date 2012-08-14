@@ -7,8 +7,11 @@ tagForm :: Maybe Tag -> Form Tag
 tagForm mtag = renderDivs $ Tag
     <$> areq textField "Name" (fmap tagName mtag)
 
-getTagsR :: Handler RepHtmlJson
-getTagsR = undefined
+getTagsR :: Handler RepHtml
+getTagsR = do
+    tagEntities <- runDB $ selectList [] []
+    let widget = $(widgetFile "tags")
+    defaultLayout widget
 
 getTagCreateR :: Handler RepHtml
 getTagCreateR = do
@@ -17,16 +20,48 @@ getTagCreateR = do
     defaultLayout widget
 
 postTagCreateR :: Handler RepHtml
-postTagCreateR = undefined
+postTagCreateR = do
+    ((result, formWidget), formEnctype) <- runFormPost (tagForm Nothing)
+    case result of
+        FormSuccess res -> do
+            _ <- runDB $ insert res
+            return ()
+        _ -> return ()
+    let widget = $(widgetFile "tagform")
+    defaultLayout widget
 
-getTagR :: TagId -> Handler RepJson
-getTagR tagid = undefined
+getTagR :: TagId -> Handler RepHtml
+getTagR tagid = do
+    tag <- runDB $ get404 tagid
+    (formWidget, formEnctype) <- generateFormPost (tagForm $ Just tag)
+    let widget = $(widgetFile "tagform")
+    defaultLayout widget
 
-postTagR :: TagId -> Handler RepJson
-postTagR tagid = undefined
+postTagR :: TagId -> Handler RepHtml
+postTagR tagid = do
+    ((formResult, formWidget), formEnctype) <- runFormPost (tagForm Nothing)
+    case formResult of
+        FormSuccess res -> do
+            _ <- runDB $ update tagid [TagName =. tagName res]
+            return ()
+        _ -> return ()
+    let widget = $(widgetFile "tagform")
+    defaultLayout widget
 
-putTagR :: TagId -> Handler RepJson
-putTagR tagid = undefined
+putTagR :: TagId -> Handler ()
+putTagR tagid = do
+    param1 <- lookupPostParams "name"
+    param2 <- lookupPostParams "location"
+    liftIO $ do
+        print param1
+        print param2
+    sendResponse ()
 
-deleteTagR :: TagId -> Handler RepJson
-deleteTagR tagid = undefined
+deleteTagR :: TagId -> Handler ()
+deleteTagR tagid = do
+    ((result, _), _) <- runFormPost (tagForm Nothing)
+    case result of
+        FormSuccess res -> do
+            liftIO $ print res
+        _ -> return ()
+    sendResponse ()
