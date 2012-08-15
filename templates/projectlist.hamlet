@@ -1,0 +1,12 @@
+<table>
+    <tr>
+        <th>ID
+        <th>Name
+        <th>Created
+        <th>Modify
+    $forall projectEntity <- projectEntities
+      <tr>
+        <td>#{show $ entityKey projectEntity}
+        <td>#{projectName $ entityVal projectEntity}
+        <td>#{show $ projectCreated $ entityVal projectEntity}
+        <td>hoge

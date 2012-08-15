@@ -19,3 +19,7 @@
 /tags                  TagsR         GET
 /tag                   TagCreateR    GET POST
 /tag/#TagId            TagR          GET POST PUT DELETE
+
+/projects              ProjectsR     GET
+/project              ProjectCreateR GET POST
+/project/#ProjectId    ProjectR      GET      PUT DELETE
