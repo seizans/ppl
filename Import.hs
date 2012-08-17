@@ -5,7 +5,6 @@ module Import
     , module Settings.StaticFiles
     , module Settings.Development
     , module Data.Monoid
-    , module Control.Monad
     , module Control.Applicative
     , Text
 #if __GLASGOW_HASKELL__ < 704

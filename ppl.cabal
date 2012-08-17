@@ -80,6 +80,7 @@ library
                  , warp                          >= 1.3        && < 1.4
                  , data-default
                  , time
+                 , http-types
 
 executable         ppl
     if flag(library-only)

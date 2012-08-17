@@ -1,0 +1,25 @@
+ajaxPut = function () {
+    var data = $('#form').serialize();
+    alert(data);
+    var sendData = 
+      { url: '/project/3'
+      , type: 'PUT'
+      , data: data
+      , success: function(data) { alert(data); }
+      }
+    $.ajax(sendData);
+};
+
+ajaxDelete = function () {
+    var sendData = 
+      { url: '/project/3'
+      , type: 'DELETE'
+      , success: function(data) { alert(data); }
+      }
+    $.ajax(sendData);
+}
+
+$(document).ready(function() {
+    $('#put').click(ajaxPut);
+    $('#delete').click(ajaxDelete);
+});

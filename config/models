@@ -1,32 +1,32 @@
-User
+User json
     ident     Text
     password  Text Maybe
     UniqueUser ident
   deriving Show
 
-Project
+Project json
     name      Text
-    created   Day
+    created   UTCTime
   deriving Show
 
-Todo
+Todo json
     title     Text
     done      Bool
     asap      Bool
-    date      Day
-    created   Day
+    date      UTCTime
+    created   UTCTime
     memo      Text
     user      UserId
     project   ProjectId
   deriving Show
 
-TagTodo
+TagTodo json
     tag       TagId
     todo      TodoId
     UniqueTagTodo
   deriving Show
 
-Tag
+Tag json
     name      Text
   deriving Show
 

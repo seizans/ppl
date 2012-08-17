@@ -9,4 +9,5 @@
         <td>#{show $ entityKey projectEntity}
         <td>#{projectName $ entityVal projectEntity}
         <td>#{show $ projectCreated $ entityVal projectEntity}
-        <td>hoge
+        <td>
+            <a href=@{ProjectR $ entityKey projectEntity}>update
