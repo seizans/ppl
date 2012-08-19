@@ -7,6 +7,7 @@ module Import
     , module Data.Monoid
     , module Control.Applicative
     , Text
+    , UTCTime
 #if __GLASGOW_HASKELL__ < 704
     , (<>)
 #endif
@@ -23,6 +24,7 @@ import Data.Monoid (Monoid (mappend, mempty, mconcat), (<>))
 import Control.Monad
 import Control.Applicative ((<$>), (<*>), pure)
 import Data.Text (Text)
+import Data.Time (UTCTime)
 import Settings.StaticFiles
 import Settings.Development
 

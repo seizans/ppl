@@ -3,34 +3,100 @@ module Handler.Todo where
 
 import Import
 import Database.Persist.GenericSql
+import Data.Time (getCurrentTime)
 
-selectTodo :: Handler [Entity Todo]
-selectTodo = runDB $ rawSql "SELECT ?? FROM todo" []
+--selectTodo :: Handler [(Entity Todo, Entity Project, [Entity Tag])]
+selectTodo :: Handler [(Entity Todo, Entity Project, Entity Tag)]
+selectTodo = runDB $ rawSql "SELECT ??, ??, ?? FROM todo, project, tag_todo, tag WHERE todo.project = project.id AND todo.id = tag_todo.todo AND tag_todo.tag = tag.id" []
 
 
 getTodosR :: Handler RepHtml
 getTodosR = do
-    let widget = do
-        setTitle "Todos"
-        $(widgetFile "todos")
+    authId <- requireAuthId
+    entityTuples <- selectTodo
+    let todoListWidget = $(widgetFile "todolist")
+    let widget = $(widgetFile "todos")
     defaultLayout widget
 
-getTodoR :: TodoId -> Handler RepHtmlJson
-getTodoR todoid = do
-    todos <- selectTodo
-    let json = object ["hoge".=True]
-    let widget = do
-        setTitle "Todo"
-        $(widgetFile "todo")
-    defaultLayoutJson widget json
+getTodoCreateR :: Handler RepHtml
+getTodoCreateR = do
+    authId <- requireAuthId
+    time <- liftIO getCurrentTime
+--    (projects, tags) <- runDB $ do
+--        ps <- selectList [] []
+--        ts <- selectList [] []
+--        return ps ts
+    projects <- runDB $ selectList [] []
+    tags <- runDB $ selectList [] []
+    (formWidget, formEnctype) <- generateFormPost $ todoForm authId time projects tags
+    defaultLayout $ $(widgetFile "form")
 
-postTodoR :: TodoId -> Handler ()
-postTodoR todoid = do
+todoForm :: UserId -> UTCTime -> [Entity Project] -> [Entity Tag] -> Form TodoForm
+todoForm authId time projects tags = renderBootstrap $ TodoForm
+    <$> areq textField "Title" Nothing
+    <*> areq intField "Point" Nothing
+    <*> areq boolField "Done" Nothing
+    <*> areq boolField "Asap" Nothing
+    <*> pure time
+    <*> pure time
+    <*> areq textField "Memo" Nothing
+    <*> areq hiddenField "" (Just authId)
+    <*> areq (selectFieldList projectFields) "Project" Nothing
+    <*> areq (multiSelectFieldList tagFields) "Tags" Nothing
+  where
+    projectFields = map (\p -> (projectName $ entityVal p, entityKey p)) projects
+    tagFields = map (\t -> (tagName $ entityVal t, entityKey t)) tags
+
+data TodoForm = TodoForm
+    { todoFormTitle :: Text
+    , todoFormPoint :: Int
+    , todoFormDone  :: Bool
+    , todoFormAsap  :: Bool
+    , todoFormDate  :: UTCTime
+    , todoFormCreated :: UTCTime
+    , todoFormMemo  :: Text
+    , todoFormUser  :: UserId
+    , todoFormProject :: ProjectId
+    , todoFormTags  :: [TagId]
+    }
+  deriving Show
+
+postTodoCreateR :: Handler RepHtml
+postTodoCreateR = do
+    authId <- requireAuthId
+    time <- liftIO getCurrentTime
+    projects <- runDB $ selectList [] []
+    tags <- runDB $ selectList [] []
+    ((formResult, formWidget), formEnctype) <- runFormPost $ todoForm authId time projects tags
+    case formResult of
+        FormMissing -> defaultLayout $ $(widgetFile "form")
+        FormFailure _ts -> defaultLayout $ $(widgetFile "form")
+        FormSuccess res -> do
+            let todoEntity = Todo
+                    { todoTitle = todoFormTitle res
+                    , todoPoint = todoFormPoint res
+                    , todoDone  = todoFormDone  res
+                    , todoAsap  = todoFormAsap  res
+                    , todoDate  = todoFormDate  res
+                    , todoCreated = todoFormCreated res
+                    , todoMemo  = todoFormMemo  res
+                    , todoUser  = todoFormUser  res
+                    , todoProject = todoFormProject res
+                    }
+            runDB $ do
+                todoId <- insert todoEntity
+                let tagTodoEntities = map (\tagId -> TagTodo { tagTodoTag = tagId, tagTodoTodo = todoId}) (todoFormTags res)
+                mapM_ insert tagTodoEntities
+            defaultLayout $ $(widgetFile "form") -- TODO: updateへのリダイレクト
     -- TODO: check if todoUser == user
     -- TODO: create new record.
     -- TODO: return new ID.
-    sendResponse ()
 
+
+getTodoR :: TodoId -> Handler RepJson
+getTodoR todoid = undefined
+postTodoR :: TodoId -> Handler RepJson
+postTodoR todoid = undefined
 putTodoR :: TodoId -> Handler RepJson
 putTodoR todoid = undefined
 

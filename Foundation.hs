@@ -8,6 +8,7 @@ module Foundation
     , Form
     , maybeAuth
     , requireAuth
+    , requireAuthId
     , module Settings
     , module Model
     , getExtra

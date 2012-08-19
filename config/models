@@ -11,6 +11,7 @@ Project json
 
 Todo json
     title     Text
+    point     Int
     done      Bool
     asap      Bool
     date      UTCTime

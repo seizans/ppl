@@ -1,0 +1,25 @@
+<table>
+    <tr>
+        <th>TodoId
+        <th>TodoTitle
+        <th>TodoPoint
+        <th>TodoDone
+        <th>TodoAsap
+        <th>TodoDate
+        <th>TodoCreated
+        <th>TodoMemo
+        <th>TodoUser
+        <th>TodoProject
+        <th>TodoTags
+    $forall entityTuple <- entityTuples
+      <tr>
+        <th>TodoTitle
+        <th>TodoPoint
+        <th>TodoDone
+        <th>TodoAsap
+        <th>TodoDate
+        <th>TodoCreated
+        <th>TodoMemo
+        <th>TodoUser
+        <th>TodoProject
+        <th>TodoTags

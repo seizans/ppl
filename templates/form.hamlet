@@ -1,0 +1,5 @@
+<form method=post>
+    ^{formWidget}
+    <input type=submit>
+    <input #put type=button value=PutButton>
+    <input #delete type=button value=DeleteButton>

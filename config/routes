@@ -7,6 +7,7 @@
 / HomeR GET POST
 
 /todos                 TodosR        GET
+/todo                  TodoCreateR   GET POST
 /todo/#TodoId          TodoR         GET POST PUT DELETE
 /todo/#TodoId/title    TodoTitleR             PUT
 /todo/#TodoId/done     TodoDoneR              PUT
