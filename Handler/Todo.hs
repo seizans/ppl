@@ -6,8 +6,8 @@ import Database.Persist.GenericSql
 import Data.Time (getCurrentTime)
 
 --selectTodo :: Handler [(Entity Todo, Entity Project, [Entity Tag])]
-selectTodo :: Handler [(Entity Todo, Entity Project, Entity Tag)]
-selectTodo = runDB $ rawSql "SELECT ??, ??, ?? FROM todo, project, tag_todo, tag WHERE todo.project = project.id AND todo.id = tag_todo.todo AND tag_todo.tag = tag.id" []
+selectTodo :: Handler [(Entity Todo, Entity Project, Entity Tag, Entity User)]
+selectTodo = runDB $ rawSql "SELECT ??, ??, ??, ?? FROM todo, project, tag_todo, tag, user WHERE todo.project = project.id AND todo.id = tag_todo.todo AND tag_todo.tag = tag.id AND todo.user = user.id" []
 
 
 getTodosR :: Handler RepHtml
@@ -15,8 +15,7 @@ getTodosR = do
     authId <- requireAuthId
     entityTuples <- selectTodo
     let todoListWidget = $(widgetFile "todolist")
-    let widget = $(widgetFile "todos")
-    defaultLayout widget
+    defaultLayout todoListWidget
 
 getTodoCreateR :: Handler RepHtml
 getTodoCreateR = do

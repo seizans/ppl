@@ -11,15 +11,16 @@
         <th>TodoUser
         <th>TodoProject
         <th>TodoTags
-    $forall entityTuple <- entityTuples
+    $forall (todo, project, tag, user) <- entityTuples
       <tr>
-        <th>TodoTitle
-        <th>TodoPoint
-        <th>TodoDone
-        <th>TodoAsap
-        <th>TodoDate
-        <th>TodoCreated
-        <th>TodoMemo
-        <th>TodoUser
-        <th>TodoProject
-        <th>TodoTags
+        <td>#{show $ entityKey todo}
+        <td>#{todoTitle $ entityVal todo}
+        <td>#{show $ todoPoint $ entityVal todo}
+        <td>#{show $ todoDone $ entityVal todo}
+        <td>#{show $ todoAsap $ entityVal todo}
+        <td>#{show $ todoDate $ entityVal todo}
+        <td>#{show $ todoCreated $ entityVal todo}
+        <td>#{todoMemo $ entityVal todo}
+        <td>#{userIdent $ entityVal user}
+        <td>#{projectName $ entityVal project}
+        <td>#{tagName $ entityVal tag}
